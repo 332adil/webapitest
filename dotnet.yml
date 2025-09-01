@@ -1,0 +1,41 @@
+name: Build and Test .NET 8 Web API
+
+on:
+  push:
+    branches: [ "main" ]   # Trigger on pushes to main
+  pull_request:
+    branches: [ "main" ]   # Trigger on PRs targeting main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Runner environment (Linux VM)
+
+    steps:
+      # Step 1: Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup .NET 8 SDK
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Step 3: Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Step 4: Build the project
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # Step 6: Publish the Web API
+      - name: Publish project
+        run: dotnet publish -c Release -o ./publish
+
+      # Step 7: Upload the published files as artifact
+      - name: Upload publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+           name: webapi-publish
+           path: ./publish

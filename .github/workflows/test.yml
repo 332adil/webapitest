@@ -1,0 +1,13 @@
+name: Sum of Two Numbers
+
+on:
+  workflow_dispatch:
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    env: 
+      text: Hello world
+    steps:
+      - name: print messagae
+        run: echo $text
